@@ -1,0 +1,71 @@
+version: "3.9"
+
+x-postgres-base: &postgres-base
+  image: postgis/postgis:15-3.3-alpine
+  restart: always
+  healthcheck:
+    test:
+      - CMD-SHELL
+      - pg_isready -U postgres
+    interval: 10s
+    timeout: 5s
+    retries: 5
+
+x-app-base: &app-base
+  build:
+    context: ./app
+  restart: 'no'
+
+services:
+  postgres-dev:
+    <<: *postgres-base
+    env_file: "./app/.env.local"
+    environment:
+      - POSTGRES_HOST=postgres-dev
+      - GUNICORN_WORKERS=4
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
+    volumes:
+      - ./postgres/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d
+      - pgdata-dev:/var/lib/postgresql/data
+    networks:
+      - dev
+
+  app-dev:
+    <<: *app-base
+    command: ["python", "load_data.py"]
+    env_file: "./app/.env.local"
+    environment:
+      - POSTGRES_HOST=postgres-dev
+      - GUNICORN_WORKERS=4
+    volumes:
+      - ./app:/app
+    depends_on:
+      postgres-dev:
+        condition: service_healthy
+    networks:
+      - dev
+
+  jupyter:
+    build:
+      context: ./app
+    command: ["jupyter", "notebook", "--ip='*'", "--port=8888", "--no-browser", "--allow-root"]
+    volumes:
+      - ./app:/app
+    ports:
+      - 8888:8888
+    networks:
+      - dev
+    depends_on:
+      - app-dev
+    environment:
+      - POSTGRES_HOST=postgres-dev
+
+volumes:
+  pgdata-dev:
+
+networks:
+  test:
+  dev:
