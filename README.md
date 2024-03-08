@@ -21,7 +21,7 @@ This project is using Docker to arquitecture the services required in order to r
 * Validate you have Docker running in your system and execute `docker-compose build`
 * `docker-compose up` This will start the container running the script to load the data from the `data/candidates.csv` and it will start jupyter-notebooks in the port `8888`.
 
-![Dashboard](docs\images\Untitled%2021.png)
+![Dashboard](https://github.com/GersonYF/etl_workshop_1/blob/main/docs/images/Untitled%2021.png?raw=true)
 
 ### Description & Goals
 
@@ -34,14 +34,14 @@ We were tasked to evaluate the candidates dataset provided with **50.000** candi
 
 The idea is to design a base pipeline to answer these questions, providing all the backing to support our answers.
 
-![Dashboard](docs\images\Untitled.png)
+![Dashboard](https://github.com/GersonYF/etl_workshop_1/blob/main/docs/images/Untitled.png?raw=true)
 
 
 ### Arquitecture Overview
 
-![Files Structure](docs\images\Untitled%201.png)
+![Files Structure](https://github.com/GersonYF/etl_workshop_1/blob/main/docs/images/Untitled%201.png?raw=true)
 
-![Services Arquitecture](docs\images\Untitled%202.png)
+![Services Arquitecture](https://github.com/GersonYF/etl_workshop_1/blob/main/docs/images/Untitled%202.png?raw=true)
 
 The architecture consists of three main services:
 
@@ -68,58 +68,58 @@ The architecture consists of three main services:
 
 This setup facilitates a development environment where database, application, and interactive exploration can work closely together.
 
-![Docker](docs\images\Untitled%203.png)
+![Docker](https://github.com/GersonYF/etl_workshop_1/blob/main/docs/images/Untitled%203.png?raw=true)
 
 ### Process & Result
 
 **Loading Raw Data:** In our `app-dev` service we have defined a `load_data` script with the usage of SQLAlchemy providing the engine for the connection to our `postgres-dev` , then we proceed to clean the names of the columns so we don’t find any spaces and lowercase them so they’re ready to be stored using pandas passing the connection to the DB, we have explicitely told pandas to replace if the data is duplicated so out of the box we have that protection. Once the script is executed we close the de service due that it completed its purpose.
 
-![webapp logs](docs\images\Untitled%204.png)
+![webapp logs](https://github.com/GersonYF/etl_workshop_1/blob/main/docs/images/Untitled%204.png?raw=true)
 
 **Notebook:** In our `EDA.ipynb` file is where we have the meat and potatoes of the project, like the data has been stored in our DB, we reuse the connection created to insert the data, to read it as well with usage of pandas, so our data comes directly from our `postgres-dev` service. Inside our notebook we can find the next sections to document our process in a incremental way starting from the basic review of the data to store the transformed data into a new table to be used for the dashboard.
 
 - **Initial review:** We see the structure of our dataset along with the location metrics four numerical numbers.
     
-    ![Initial Review](docs\images\Untitled%205.png)
+    ![Initial Review](https://github.com/GersonYF/etl_workshop_1/blob/main/docs/images/Untitled%205.png?raw=true)
     
 
 - **Univariate Exploring:** Here we evaluate our variables alone so we can see how they behave, this section has sub-sections reviewing the different types of our columns.
     - **Numerical:** We only review **Years of Experience (yoe)** due that from code_challenge_score and technical_interview_score we only care if both are above 7 in order to define is a candidate is hired.
         
-        ![YoE](docs\images\Untitled%206.png)
+        ![YoE](https://github.com/GersonYF/etl_workshop_1/blob/main/docs/images/Untitled%206.png?raw=true)
         
     
     - **Binary:** Like we mention early we from code_challenge_score and technical_interview_score we only care if both are above 7 in order to define is a candidate is hired, this stores the values as true or false according to the condition.
         
-        ![Hired](docs\images\Untitled%207.png)
+        ![Hired](https://github.com/GersonYF/etl_workshop_1/blob/main/docs/images/Untitled%207.png?raw=true)
         
     
     - **Categorical:** Most our columns care categorical values where we can found email, country, seniority, technology that had to be mapped into a new parent category to group the many sub-categories that this field had.
         - Years
             
-            ![The year **2022** got (**5642**) the lower number of applications, while the **2020** got (**11237**) the year with most applications reported.](docs\images\Untitled%208.png)
+            ![The year **2022** got (**5642**) the lower number of applications, while the **2020** got (**11237**) the year with most applications reported.](https://github.com/GersonYF/etl_workshop_1/blob/main/docs/images/Untitled%208.png?raw=true)
             The year **2022** got (**5642**) the lower number of applications, while the **2020** got (**11237**) the year with most applications reported.
             
         - Email
             
-            ![`There is a **0.3%** of users with the same email sending multiple applications.`](docs\images\Untitled%209.png)
+            ![`There is a **0.3%** of users with the same email sending multiple applications.`](https://github.com/GersonYF/etl_workshop_1/blob/main/docs/images/Untitled%209.png?raw=true)
             There is a **0.3%** of users with the same email sending multiple applications.
             
             When watching for emails a couple of questions were raised about if these duplicated emails are duplicated entries or they’re different records.
             
         - **Country (USA, Brazil, Colombia, and Ecuador)**
             
-            ![Even thought the number of applications are high, our target countries **don't make it into the top ten** with most applications. **Colombia** being short of **5 applications to make it.**](docs\images\Untitled%2010.png)
+            ![Even thought the number of applications are high, our target countries **don't make it into the top ten** with most applications. **Colombia** being short of **5 applications to make it.**](https://github.com/GersonYF/etl_workshop_1/blob/main/docs/images/Untitled%2010.png?raw=true)
             Even thought the number of applications are high, our target countries **don't make it into the top ten** with most applications. **Colombia** being short of **5 applications to make it.**
             
         - **Seniority**
             
-            ![Seniority](docs\images\Untitled%2011.png)
+            ![Seniority](https://github.com/GersonYF/etl_workshop_1/blob/main/docs/images/Untitled%2011.png?raw=true)
             
         
         - **Technology**
             
-            ![The seniority **System Integration and Connectivity** got (**1973**) the lower number of applications, while the **Coding and Development** got (**13447**) the seniority with most applications reported.](docs\images\Untitled%2012.png)
+            ![The seniority **System Integration and Connectivity** got (**1973**) the lower number of applications, while the **Coding and Development** got (**13447**) the seniority with most applications reported.](https://github.com/GersonYF/etl_workshop_1/blob/main/docs/images/Untitled%2012.png?raw=true)
             The seniority **System Integration and Connectivity** got (**1973**) the lower number of applications, while the **Coding and Development** got (**13447**) the seniority with most applications reported.
             
             For this columns we originaly had 24 different technologies that could be grouped together to be more manageable.
@@ -127,41 +127,41 @@ This setup facilitates a development environment where database, application, an
 - **Bivariate & Multivariate Exploring:** After reviewing individually our attributes, there were a couple of questions raised that we can answer doing this exploring between multiple attributes.
     - **Were the multiple applications from duplicate emails submitted within the same year or across different years?**
         
-        ![Were the multiple applications from duplicate emails submitted within the same year or across different years?](docs\images\Untitled%2013.png)
+        ![Were the multiple applications from duplicate emails submitted within the same year or across different years?](https://github.com/GersonYF/etl_workshop_1/blob/main/docs/images/Untitled%2013.png?raw=true)
         
     
     - **Were the multiple applications from duplicate emails for the same technology?**
     
-    ![Were the multiple applications from duplicate emails for the same technology?](docs\images\Untitled%2014.png)
+    ![Were the multiple applications from duplicate emails for the same technology?](https://github.com/GersonYF/etl_workshop_1/blob/main/docs/images/Untitled%2014.png?raw=true)
     
     - **How is the distribution of years of experience across different seniority levels?**
         
-        ![Untitled](docs\images\Untitled%2015.png)
+        ![Untitled](https://github.com/GersonYF/etl_workshop_1/blob/main/docs/images/Untitled%2015.png?raw=true)
         
     
     - **Which technologies are most applied for by country?**
         
-        ![Untitled](docs\images\Untitled%2016.png)
+        ![Untitled](https://github.com/GersonYF/etl_workshop_1/blob/main/docs/images/Untitled%2016.png?raw=true)
         
     
     - **How many individuals have been hired, categorized by seniority level?**
         
-        ![Untitled](docs\images\Untitled%2017.png)
+        ![Untitled](https://github.com/GersonYF/etl_workshop_1/blob/main/docs/images/Untitled%2017.png?raw=true)
         
     
     - **How many individuals have been hired, categorized by technology?**
         
-        ![Untitled](docs\images\Untitled%2018.png)
+        ![Untitled](https://github.com/GersonYF/etl_workshop_1/blob/main/docs/images/Untitled%2018.png?raw=true)
         
     
     - **How many individuals have been hired, categorized by country?**
         
-        ![Untitled](docs\images\Untitled%2019.png)
+        ![Untitled](https://github.com/GersonYF/etl_workshop_1/blob/main/docs/images/Untitled%2019.png?raw=true)
         
     
     - **Which years had the highest number of hires?**
         
-        ![Untitled](docs\images\Untitled%2020.png)
+        ![Untitled](https://github.com/GersonYF/etl_workshop_1/blob/main/docs/images/Untitled%2020.png?raw=true)
         
 
 ### Conclusions
